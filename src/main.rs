@@ -31,6 +31,7 @@ fn main() {
     };
     //eprintln!("{:?}", date);
 
+    // TODO: Add support for time archived in month folder after
     let month_directory_path = format!(
         "{}/{}",
         options.worklog_dir,
