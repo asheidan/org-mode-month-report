@@ -118,12 +118,9 @@ fn main() {
             f => format!("{:.2}", f),
         });
     
+    eprintln!("--- {:-<76}", date.format("%B %Y "));
     for (index, duration_string) in mapped_strings.iter().enumerate() {
-        eprintln!(
-            "{:2}:{:>6}",
-            index + 1,
-            duration_string,
-        );
+        eprintln!("{:2}:{:>6}", index + 1, duration_string);
     }
     eprintln!("T:{:>7.2}", mapped_timestamps.iter().sum::<f64>());
 
