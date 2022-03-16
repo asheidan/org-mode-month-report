@@ -8,5 +8,6 @@ edition = "2021"
 [dependencies]
 chrono = "*"
 regex = "*"
-clap = { version = "*", features = ["derive"] }
+# default-features = false to get rid of colored output
+clap = { version = "*", default-features = false, features = ["std", "derive"] }
 #home = "*"

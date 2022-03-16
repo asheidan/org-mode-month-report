@@ -69,7 +69,9 @@ fn main() {
             },
             _ => None,
         });
-    let timestamps = available_paths
+
+    // Iterator over all durations found in the referenced files
+    let durations = available_paths
         .map(|file_path| fs::File::open(file_path))
         .filter_map(|maybe_file| match maybe_file {
             Ok(file) => Some(io::BufReader::new(file).lines()),
@@ -106,14 +108,15 @@ fn main() {
             }
         });
 
-    let mapped_timestamps = timestamps
+    // Collect the durations per day for the month
+    let mapped_durations = durations
         .fold([0; 31], |mut acc, (date, duration)| {
             acc[(date.day() - 1) as usize] += duration;
             acc
         })
         .map(|number| (number as f64 / 900.0).round() / 4.0);
 
-    let mapped_strings = mapped_timestamps
+    let mapped_strings = mapped_durations
         .map(|number| match number {
             f if (-1.0 ..= 0.0).contains(&f) => String::from(""),
             f => format!("{:.2}", f),
@@ -123,7 +126,7 @@ fn main() {
     for (index, duration_string) in mapped_strings.iter().enumerate() {
         eprintln!("{:2}:{:>6}", index + 1, duration_string);
     }
-    eprintln!("T:{:>7.2}", mapped_timestamps.iter().sum::<f64>());
+    eprintln!("T:{:>7.2}", mapped_durations.iter().sum::<f64>());
 
     eprintln!("--------------------------------------------------------------------------------");
     let row = mapped_strings.join("\t");
